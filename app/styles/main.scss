@@ -1,5 +1,9 @@
 $icon-font-path: '../fonts/';
 
+#design-canvas{
+  border: 1px solid #555;
+}
+
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
@@ -13,7 +17,7 @@ $icon-font-path: '../fonts/';
 
 /* Space out content a bit */
 body {
-  padding-top: 20px;
+  padding-top: 5px;
   padding-bottom: 20px;
 }
 
