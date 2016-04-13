@@ -38,10 +38,10 @@ function resourceLoaded() {
 }
 
 function drawPoint(x, y){	                        
-	d[0]   = r;
-	d[1]   = g;
-	d[2]   = b;
-	d[3]   = a;
+	d[0]   = 255;
+	d[1]   = 0;
+	d[2]   = 0;
+	d[3]   = 255;
 	context.putImageData( id, x, y ); 
 }
 
@@ -75,7 +75,7 @@ function redraw() {
 
 	clearCanvas();
   
-	drawPoint(x, y);
+	//drawPoint(x, y);
 
 	/*                      
 	context.drawImage(images["leftArm"], x + 40, y - 42);  
