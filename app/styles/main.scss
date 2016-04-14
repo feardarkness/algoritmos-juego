@@ -1,8 +1,48 @@
 $icon-font-path: '../fonts/';
+/* added */
+
+.ui-state-highlight{
+  //background-color: #efefef;
+}
+
+.draggable-element{
+  border: solid 2px red;  
+  margin: 2px;
+  z-index: 101;
+}
 
 #design-canvas{
   border: 1px solid #555;
 }
+
+#elements-container{
+  border: 1px solid blue;
+}
+
+#elements-holder{
+  border: 1px solid green;
+  transition: background-color 1s;
+}
+
+#droppable-element{
+  height: 400px;
+}
+
+/* added so all columns have same height, remove if u want this on a cellphone >_< */
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+  flex-wrap: wrap;
+}
+.row > [class*='col-'] {
+  display: flex;
+  flex-direction: column;
+}
+/* added so all columns have same height, remove if u want this on a cellphone >_< */
+
+/* added */
 
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";

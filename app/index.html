@@ -11,6 +11,7 @@
 
     <!-- build:css styles/vendor.css -->
     <!-- bower:css -->
+    <link rel="stylesheet" href="/bower_components/jquery-ui/themes/base/jquery-ui.min.css">
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -38,20 +39,21 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-5">
           <canvas id="design-canvas" width="400" height="400">            
           </canvas>
         </div>
         <div id="elements-container" class="col-lg-3">       
-          <h1>Items que se pueden utilizar</h1> 
-          <div class=" draggable-element ui-widget-content">Mover derecha</div>
-          <div class=" draggable-element ui-widget-content">Mover izquierda</div>
-          <div class=" draggable-element ui-widget-content">Mover arriba</div>
-          <div class=" draggable-element ui-widget-content">Mover abajo</div>
+          <h3>Items que se pueden utilizar</h3> 
+          <div class="draggable-element">Mover derecha</div>
+          <div class="draggable-element">Mover izquierda</div>
+          <div class="draggable-element">Mover arriba</div>
+          <div class="draggable-element">Mover abajo</div>
         </div>
-        <div id="elements-holder" class="col-lg-6">          
-          <h1>Posicionar items</h1> 
-          <div id="droppable-element" class="ui-widget-content">            
+        <div id="elements-holder" class="col-lg-4">          
+          <h3>Posicionar items</h3> 
+          <button id="try" class="btn btn-primary">Probar</button>
+          <div id="droppable-element">
           </div>
         </div>
       </div>
@@ -64,6 +66,7 @@
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/jquery-ui/jquery-ui.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     

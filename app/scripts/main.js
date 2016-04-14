@@ -1,15 +1,6 @@
 // sprite size: 64x64
 // maybe i should take every thick as a step
 
-$(".draggable-element").draggable();
-$("#dropable-element").droppable();
-
-$(document).ready(function(){
-	var $canvasElement = $("#design-canvas");
-	$canvasElement.width($canvasElement.parent().width());
-	$canvasElement.height($canvasElement.parent().width())
-});
-
 var character = {
 	"id": "professor",
 	"width": 64,
@@ -58,6 +49,27 @@ var character = {
 	}
 };
 
+
+
+$(".draggable-element").draggable({
+	"revert": "invalid"
+});
+
+$("#droppable-element").droppable({
+	accept: ".draggable-element",
+	activeClass: "ui-state-highlight",
+	drop: function(event, ui){
+		$(ui.draggable).appendTo('#droppable-element');
+	}
+});
+
+
+$(document).ready(function(){
+	var $canvasElement = $("#design-canvas");
+	$canvasElement.width($canvasElement.parent().width());
+	$canvasElement.height($canvasElement.parent().width())
+});
+
 var image = new Image(),
 	canvas = document.getElementById('design-canvas'),
 	context = canvas.getContext("2d"),
@@ -77,6 +89,16 @@ var image = new Image(),
 	posXInCanvas=0,
 	posYInCanvas=0,
 	movementRate = 2;	
+
+$("#try").on('click', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	console.log("It works!!!");
+	console.log($("#droppable-element"));
+	$("#droppable-element").children('.draggable-element') .each(function(index, el) {
+		console.log(el);
+	});
+});
 
 $(document).on('keydown', function(event) {	
 	if(event.which == 13){
