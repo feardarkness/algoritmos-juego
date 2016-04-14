@@ -1,6 +1,15 @@
 // sprite size: 64x64
 // maybe i should take every thick as a step
 
+$(".draggable-element").draggable();
+$("#dropable-element").droppable();
+
+$(document).ready(function(){
+	var $canvasElement = $("#design-canvas");
+	$canvasElement.width($canvasElement.parent().width());
+	$canvasElement.height($canvasElement.parent().width())
+});
+
 var character = {
 	"id": "professor",
 	"width": 64,
@@ -25,6 +34,26 @@ var character = {
 			"row": 3,
 			"animations": 8,
 			"startposInSpriteSheet": 64
+		},
+		"face-up": {
+			"row": 0,
+			"animations": 1,
+			"startposInSpriteSheet": 0
+		},
+		"face-down": {
+			"row": 1,
+			"animations": 1,
+			"startposInSpriteSheet": 0
+		},
+		"face-left": {
+			"row": 2,
+			"animations": 1,
+			"startposInSpriteSheet": 0
+		},
+		"face-right": {
+			"row": 3,
+			"animations": 1,
+			"startposInSpriteSheet": 0
 		}
 	}
 };
@@ -37,7 +66,7 @@ var image = new Image(),
 	charY = 185,
 	id = context.createImageData(1,1),
 	d  = id.data,
-	characterState = 'walk-right',
+	characterState = 'face-right',
 	jsonCharacterState = character.animations[characterState],
 	totalResources = 1,
 	spriteSize = 64,
@@ -50,7 +79,9 @@ var image = new Image(),
 	movementRate = 2;	
 
 $(document).on('keydown', function(event) {	
-	if(event.which == 37){
+	if(event.which == 13){
+		characterState = "face-right";		
+	}else if(event.which == 37){
 		characterState = "walk-left";
 	}else if(event.which == 38){
 		characterState = "walk-up";
@@ -59,7 +90,7 @@ $(document).on('keydown', function(event) {
 	}else if(event.which == 40){
 		characterState = "walk-down";
 	}
-	//jsonCharacterState = character.animations[characterState];
+	jsonCharacterState = character.animations[characterState];
 });
 
 loadImage();
@@ -111,7 +142,7 @@ function drawEllipse(centerX, centerY, width, height) {
   context.closePath();	
 }
 
-function moveCharacter(){
+function calculateCharacterPosition(){
 	if(characterState === "walk-left"){
 		posXInCanvas = posXInCanvas - movementRate;
 	}else if(characterState === "walk-right"){
@@ -122,17 +153,33 @@ function moveCharacter(){
 		posYInCanvas = posYInCanvas + movementRate;
 	}
 }
+
+function fillBackground(color){
+	context.beginPath();
+	context.rect(0, 0, 400, 400);
+	context.fillStyle = color;
+	context.fill();
+}
+
+function drawImage(){	
+	context.drawImage(image, posInSpriteSheet*spriteSize+jsonCharacterState.startposInSpriteSheet, jsonCharacterState.row*spriteSize, spriteSize, spriteSize, posXInCanvas, posYInCanvas, spriteSize, spriteSize);
+}
+
+function drawShadow(){
+	drawEllipse(posXInCanvas+32, posYInCanvas+60, 30, 4);
+}
   
 function redraw() {
-
 	var x = charX;
 	var y = charY;
 
 	if (tickCount > ticksPerFrame){
-		moveCharacter();
-		clearCanvas();
-		context.drawImage(image, posInSpriteSheet*spriteSize+jsonCharacterState.startposInSpriteSheet, jsonCharacterState.row*spriteSize, spriteSize, spriteSize, posXInCanvas, posYInCanvas, spriteSize, spriteSize);	
-		if (posInSpriteSheet + 1 == jsonCharacterState.animations){	
+		calculateCharacterPosition();
+		clearCanvas();		
+		//fillBackground("#D6C3C6");
+		//drawShadow();
+		drawImage();		
+		if (posInSpriteSheet + 1 >= jsonCharacterState.animations){	
 			posInSpriteSheet = 0;
 		}else{	
 			posInSpriteSheet++;
@@ -140,20 +187,6 @@ function redraw() {
 		tickCount = 0;
 	}else{
 		tickCount++;
-	}
-  
-	//drawPoint(x, y);
-
-	/*                   
-	context.drawImage(images["leftArm"], x + 40, y - 42);  
-	context.drawImage(images["legs"], x, y);
-	context.drawImage(images["torso"], x, y - 50);
-	context.drawImage(images["rightArm"], x - 15, y - 42);
-	context.drawImage(images["head"], x - 10, y - 125);
-	context.drawImage(images["hair"], x - 37, y - 138);
-	drawEllipse(x + 47, y - 68, 11, 16); // Left Eye
-	drawEllipse(x + 58, y - 68, 12, 17); // Right Eye
-	*/
-	
+	}	
 }
 
