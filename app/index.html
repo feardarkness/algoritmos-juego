@@ -18,7 +18,7 @@
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-    
+
     <!-- build:js scripts/vendor/modernizr.js -->
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
@@ -27,7 +27,6 @@
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    
     <div class="container-fluid">
       <div class="header">
         <ul class="nav nav-pills pull-right">
@@ -39,19 +38,23 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-5">
-          <canvas id="design-canvas" width="400" height="400">            
+        <div class="col-lg-4">
+          <canvas id="design-canvas" width="400" height="400">
           </canvas>
         </div>
-        <div id="elements-container" class="col-lg-3">       
-          <h3>Items que se pueden utilizar</h3> 
-          <div class="draggable-element">Mover derecha</div>
-          <div class="draggable-element">Mover izquierda</div>
-          <div class="draggable-element">Mover arriba</div>
-          <div class="draggable-element">Mover abajo</div>
+        <div id="elements-container" class="col-lg-4">
+          <h3>Items que se pueden utilizar</h3>
+          <div class="draggable-element" mov="right-movement">Mover derecha 8 pasos</div>
+          <div class="draggable-element" mov="left-movement">Mover izquierda 8 pasos</div>
+          <div class="draggable-element" mov="up-movement">Mover arriba 8 pasos</div>
+          <div class="draggable-element" mov="down-movement">Mover abajo 8 pasos</div>
+          <div class="draggable-element" mov="right-movement">Mover derecha 8 pasos</div>
+          <div class="draggable-element" mov="left-movement">Mover izquierda 8 pasos</div>
+          <div class="draggable-element" mov="up-movement">Mover arriba 8 pasos</div>
+          <div class="draggable-element" mov="down-movement">Mover abajo 8 pasos</div>
         </div>
-        <div id="elements-holder" class="col-lg-4">          
-          <h3>Posicionar items</h3> 
+        <div id="elements-holder" class="col-lg-4">
+          <h3>Posicionar items</h3>
           <button id="try" class="btn btn-primary">Probar</button>
           <div id="droppable-element">
           </div>
@@ -61,15 +64,21 @@
       <div class="footer">
         <p>AGETIC</p>
       </div>
-    </div>    
-    
+    </div>
+
+    <div id="dialog-message" title="Atención">
+      <p>
+        El profesor ha abandonado su busqueda
+      </p>
+  </div>
+
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/jquery-ui/jquery-ui.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
-    
+
     <!-- build:js scripts/plugins.js -->
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
@@ -84,7 +93,7 @@
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
     <!-- endbuild -->
-    
+
     <!-- build:js scripts/main.js -->
     <script src="scripts/main.js"></script>
     <!-- endbuild -->

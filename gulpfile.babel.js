@@ -61,7 +61,7 @@ gulp.task('html', ['styles', 'scripts'], () => {
 });
 
 gulp.task('images', () => {
-  return gulp.src('app/images/**/*')
+  return gulp.src('app/images/**/*', 'bower_components/jquery-ui/themes/base/images/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true,
