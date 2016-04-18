@@ -34,12 +34,12 @@ var character = {
 			'startposInSpriteSheet': 0
 		},
 		'face-down': {
-			'row': 1,
+			'row': 2,
 			'animations': 1,
 			'startposInSpriteSheet': 0
 		},
 		'face-left': {
-			'row': 2,
+			'row': 1,
 			'animations': 1,
 			'startposInSpriteSheet': 0
 		},
@@ -47,37 +47,120 @@ var character = {
 			'row': 3,
 			'animations': 1,
 			'startposInSpriteSheet': 0
+		},
+		'dead': {
+			'row': 0,
+			'animations': 6,
+			'startposInSpriteSheet': 0
 		}
 	}
 };
 
-var image = new Image(),
+var stages = [
+	{
+		xStart : 132,
+		yStart : 260,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="repeat-1-2">Repetir la última acción 2 veces</div>'
+		],
+		movements : [{
+			y: -8
+		},{
+			x: 8
+		},{
+			y: -8
+		}],
+		correct: ['Mover arriba 8 pasos', 'Mover derecha 8 pasos', 'Mover arriba 8 pasos' ],
+		characterState : 'face-up',
+		posXInCanvas: 100,
+		posYInCanvas: 200,
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.1
+	},
+	{
+		xStart : 35,
+		yStart : 60,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>'
+		],
+		movements : [{
+			y: 8
+		},{
+			x: 8
+		}],
+		correct: ['Mover abajo 8 pasos', 'Mover derecha 8 pasos' ],
+		characterState : 'face-right',
+		posXInCanvas: 0,
+		posYInCanvas: 0,
+		stepInCanvasX : 7.1,
+		stepInCanvasY : 8.1
+	},
+	{
+		xStart : 35,
+		yStart : 60,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>'
+		],
+		movements : [{
+			y: 8
+		},{
+			x: 8
+		}],
+		correct: ['Mover abajo 8 pasos', 'Mover derecha 8 pasos' ],
+		characterState : 'face-right',
+		posXInCanvas: 0,
+		posYInCanvas: 0,
+		stepInCanvasX : 7.1,
+		stepInCanvasY : 8.1
+	}
+];
+
+var images = [],
 	canvas = document.getElementById('design-canvas'),
 	context = canvas.getContext('2d'),
 	fps = 30,
 	//id = context.createImageData(1, 1),
 	//d = id.data,
-	characterState = 'face-right',
+	stage = 0,
+	characterState = stages[stage].characterState,
 	jsonCharacterState = character.animations[characterState],
-	totalResources = 1,
+	totalResources = 3,
 	spriteSize = 64,
 	numResourcesLoaded = 0,
 	ticksPerFrame = 2,
 	tickCount = 0,
 	posInSpriteSheet = 0,
-	posXInCanvas = 0,
-	posYInCanvas = 0,
+	posXInCanvas = stages[stage].posXInCanvas,
+	posYInCanvas = stages[stage].posYInCanvas,
 	movementRate = 2,
 	stepsMoved = 0,
 	movements = [],
 	pos = 0,
 	stepsToWalk = 8,
-	interval = null;
+	interval = null,
+	deadInterval = null,
+	stepInCanvasX = stages[stage].stepInCanvasX,
+	stepInCanvasY = stages[stage].stepInCanvasY,
+	allRight = true;
 
-
-
-$('.draggable-element').draggable({
-	'revert': 'invalid'
+$(window).resize(function(){
+	var $canvasElement = $('#design-canvas');
+	$canvasElement.width($canvasElement.parent().width());
+	$canvasElement.height($canvasElement.parent().width());
 });
 
 $('#droppable-element').droppable({
@@ -91,30 +174,109 @@ $('#droppable-element').droppable({
 	}
 });
 
-$('#dialog-message').dialog({
-	modal: true
-});
+function drawOptionsAndMakeDraggable(){
+	for(var pos=0; pos < stages[stage].options.length; pos++){
+		$("#elements-container").append(stages[stage].options[pos]);
+	}
+	$('.draggable-element').draggable({
+		'revert': 'invalid'
+	});
+}
 
+function clearOptionsInScreen(){
+	$('.draggable-element').each(function(index, el) {
+		$(el).remove();
+	});
+}
+
+function revertToStart(){
+	clearOptionsInScreen();
+	resetVariables();
+	drawCharacterInStartingPosition();
+	drawOptionsAndMakeDraggable();
+}
 $(document).ready(function(){
 	var $canvasElement = $('#design-canvas');
 	$canvasElement.width($canvasElement.parent().width());
 	$canvasElement.height($canvasElement.parent().width());
+	drawOptionsAndMakeDraggable();
 });
+
+
 
 function clearCanvas(){
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-function drawImage(){
-	context.drawImage(image, posInSpriteSheet * spriteSize + jsonCharacterState.startposInSpriteSheet, jsonCharacterState.row * spriteSize, spriteSize, spriteSize, posXInCanvas, posYInCanvas, spriteSize, spriteSize);
+function drawStage(stage){
+	context.beginPath();
+	var pathX = stage.xStart;
+	var pathY = stage.yStart;
+	context.lineWidth = 5;
+	context.strokeStyle = "#DDFF00";
+	context.moveTo(pathX, pathY);
+	for(var pos = 0; pos < stage.movements.length; pos++){
+		if(stage.movements[pos].hasOwnProperty("x")){
+			pathX = pathX + (stepInCanvasX * ( stage.movements[pos].x));
+		}else{
+			pathY = pathY + (stepInCanvasY * ( stage.movements[pos].y));
+		}
+		context.lineTo(pathX, pathY);
+	}
+	context.stroke();
+	context.closePath();
+}
+
+function drawImage(im){
+	context.drawImage(images[im], posInSpriteSheet * spriteSize + jsonCharacterState.startposInSpriteSheet, jsonCharacterState.row * spriteSize, spriteSize, spriteSize, posXInCanvas, posYInCanvas, spriteSize, spriteSize);
+}
+
+function drawFloor(){
+	var width = $('#design-canvas').parent().width(),
+		pieces = Math.ceil(width/62);
+	for(var i=0; i<pieces; i++){
+		for(var j=0; j<pieces; j++){
+			context.drawImage(images[2], 18, 16, 62, 62, 64*i, 64*j, 64, 64);
+		}
+	}
 }
 
 function drawCharacterInStartingPosition(){
-	characterState = 'face-right';
+	characterState = stages[stage].characterState;
 	jsonCharacterState = character.animations[characterState];
 	clearCanvas();
-	drawImage();
+	drawFloor();
+	drawStage(stages[stage]);
+	drawImage(0);
 }
+
+$('#dialog-message').dialog({
+	modal: true,
+	autoOpen: false,
+	dialogClass: 'no-close',
+	buttons: [{
+		text: "Dejame intentar de nuevo",
+		click: function(){
+			$(this).dialog('close');
+			revertToStart();
+		}
+	}]
+});
+
+$('#dialog-success').dialog({
+	modal: true,
+	autoOpen: false,
+	dialogClass: 'no-close',
+	buttons: [{
+		text: "Siguiente reto",
+		click: function(){
+			$(this).dialog('close');
+			stage++;
+			revertToStart();
+		}
+	}]
+});
+
 
 /*
 		move the professor with arrow keys :D
@@ -202,6 +364,28 @@ function isCharacterMoving(){
 	return false;
 }
 
+function animateDead(){
+	characterState = 'dead';
+	jsonCharacterState = character.animations[characterState];
+	if (tickCount > 3){				// 3 thicks por frame en la muerte
+		clearCanvas();						// clear earlier step
+		drawFloor();
+		drawStage(stages[stage]);
+		drawShadow();						// shadow draw to character
+		drawImage(1);
+		posYInCanvas += 3;
+		if (posInSpriteSheet + 1 === jsonCharacterState.animations){
+			clearInterval(deadInterval);
+			$("#dialog-message").dialog("open");
+		}else{
+			posInSpriteSheet++;
+		}
+		tickCount = 0;
+	}else{
+		tickCount++;
+	}
+}
+
 
 function redraw() {
 	if (tickCount > ticksPerFrame && isCharacterMoving()){
@@ -210,15 +394,25 @@ function redraw() {
 			if(stepsMoved > stepsToWalk * 4){		// 4 thicks = one step
 				if(pos === movements.length){		// all movements finished
 					clearInterval(interval);
+					if(allRight && movements.length == stages[stage].correct.length){
+						$("#dialog-success").dialog("open");
+					}else{
+						tickCount = 0;
+						posInSpriteSheet = 0;
+						deadInterval = setInterval(animateDead, 1000 / fps);
+						return;
+					}
 				}
 				stepsMoved = 0;
 				setCharacterDirection(pos);
 			}
 			calculateCharacterPosition();		// position of the character in canvas before drawing
 			clearCanvas();						// clear earlier step
-			fillBackground('#D6C3C6');
+			//fillBackground('#D6C3C6');
+			drawFloor();
+			drawStage(stages[stage]);
 			drawShadow();						// shadow draw to character
-			drawImage();						// draw character
+			drawImage(0);						// draw character
 			if (posInSpriteSheet + 1 >= jsonCharacterState.animations){
 				posInSpriteSheet = 0;
 			}else{
@@ -227,24 +421,37 @@ function redraw() {
 			tickCount = 0;
 		}else{
 			clearInterval(interval);
-			// character is out of the canvas, show message or something else
+			$("#dialog-message").dialog("open");
 		}
 	}else if(isCharacterMoving()){
 		tickCount++;
 	}
 }
 
+function isTheRightStep(){
+	if (movements[pos].html() === stages[stage].correct[pos]){
+		return true;
+	}
+	return false;
+}
+
 
 function setCharacterDirection(){
 	if (pos < movements.length){
-		if (movements[pos] === 'right-movement'){
+		if (movements[pos].attr('mov') === 'right-movement'){
 			characterState = 'walk-right';
-		}else if (movements[pos] === 'left-movement'){
+		}else if (movements[pos].attr('mov') === 'left-movement'){
 			characterState = 'walk-left';
-		}else if (movements[pos] === 'up-movement'){
+		}else if (movements[pos].attr('mov') === 'up-movement'){
 			characterState = 'walk-up';
-		}else if (movements[pos] === 'down-movement'){
+		}else if (movements[pos].attr('mov') === 'down-movement'){
 			characterState = 'walk-down';
+		}
+		if(isTheRightStep()){
+			markStep('#7BDB89');		// mark green, all good
+		}else{
+			markStep('#DB7B7B');		// mark red, bad step
+			allRight = false;
 		}
 	}else{
 		characterState = 'face-right';
@@ -253,18 +460,26 @@ function setCharacterDirection(){
 	pos++;
 }
 
+function markStep(color){
+	$(movements[pos]).animate({
+		'background-color': color
+	}, 3000);
+}
+
 function resetVariables(){
-	characterState = 'face-right';
+	characterState = stages[stage].characterState;
 	jsonCharacterState = character.animations[characterState];
 	ticksPerFrame = 2;
 	tickCount = 0;
 	posInSpriteSheet = 0;
-	posXInCanvas = 0;
-	posYInCanvas = 0;
+	posXInCanvas = stages[stage].posXInCanvas;
+	posYInCanvas = stages[stage].posYInCanvas;
 	stepsMoved = 0;
 	movements = [];
 	pos = 0;
 	stepsToWalk = 8;
+	allRight = true;
+
 }
 
 function resourceLoaded() {
@@ -275,14 +490,17 @@ function resourceLoaded() {
 	}
 }
 
-function loadImage() {
-	image.onload = function() {
+function loadImage(src, im) {
+	images[im] = new Image();
+	images[im].onload = function() {
 		resourceLoaded();
 	};
-	image.src = 'images/professor_walk_cycle_no_hat.png';
+	images[im].src = src;
 }
 
-loadImage();
+loadImage('images/professor_walk_cycle_no_hat.png', 0);
+loadImage('images/professor_hurt_no_hat.png', 1);
+loadImage('images/crypt.png', 2);
 
 $('#try').on('click', function(event) {
 	event.preventDefault();
@@ -291,7 +509,8 @@ $('#try').on('click', function(event) {
 	resetVariables();
 	movements = [];
 	$('#droppable-element').children('.draggable-element') .each(function(index, el) {
-		movements.push($(el).attr('mov'));
+		//movements.push($(el).attr('mov'));
+		movements.push($(el));
 	});
 	setCharacterDirection();
 	interval = setInterval(redraw, 1000 / fps);

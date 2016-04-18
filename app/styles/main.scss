@@ -1,14 +1,22 @@
 $icon-font-path: '../fonts/';
 /* added */
 
+body{
+  font-family: "Georgia";
+}
 .ui-state-highlight{
   //background-color: #efefef;
 }
 
 .draggable-element{
-  border: solid 2px red;  
+  color: #000;
   margin: 2px;
-  z-index: 101;
+  padding: 2px;
+  /*  z-index: 101;*/
+}
+
+.action-element{
+  background-color: #1E5E73;
 }
 
 #design-canvas{
@@ -27,6 +35,12 @@ $icon-font-path: '../fonts/';
 #droppable-element{
   height: 400px;
 }
+
+/* jquery-ui no close button */
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+/* jquery-ui no close button */
 
 /* added so all columns have same height, remove if u want this on a cellphone >_< */
 .row {
