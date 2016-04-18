@@ -3,6 +3,9 @@
 // sprite size: 64x64
 // maybe i should take every thick as a step
 
+// para ajustar a velocidad cambiar la variable fps
+var fps = 30;
+
 var character = {
 	'id': 'professor',
 	'width': 64,
@@ -61,15 +64,212 @@ var stages = [
 		xStart : 132,
 		yStart : 260,
 		options:[
-			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="repeat-1-2">Repetir la última acción 2 veces</div>'
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success repeat" mov="repeat-1-2">Repetir acciones 2 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success repeat" mov="repeat-1-2">Repetir acciones 2 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>'
+		],
+		movements : [{
+			y: -8
+		},{
+			x: 8
+		},{
+			y: 8
+		},{
+			x: -8
+		}],
+		correct: [
+					[
+						'Mover derecha',
+						'Mover arriba',
+						'Mover izquierda',
+						'Mover abajo'
+					],
+					[
+						'Mover arriba',
+						'Mover derecha',
+						'Mover abajo',
+						'Mover izquierda'
+					]
+				],
+		characterState : 'face-right',
+		posXInCanvas: 100,
+		posYInCanvas: 200,
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.2
+	},
+	{
+		xStart : 132,
+		yStart : 260,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success repeat" mov="repeat-1-2">Repetir acciones 2 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success repeat" mov="repeat-1-2">Repetir acciones 2 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>'
+		],
+		movements : [{
+			y: 8
+		},{
+			y: 8
+		},{
+			x: 8
+		},{
+			y: -8
+		},{
+			x: 8
+		}, {
+			y: -8
+		},{
+			x: 8
+		},{
+			y: -8
+		},{
+			x: -8
+		},{
+			y: -8
+		},{
+			y: -8
+		},{
+			x: -8
+		}],
+		correct: [
+					[
+						'Mover abajo',
+						'Mover abajo',
+						'Mover derecha',
+						'Mover arriba',
+						'Mover derecha',
+						'Mover arriba',
+						'Mover derecha',
+						'Mover arriba',
+						'Mover izquierda',
+						'Mover arriba',
+						'Mover arriba',
+						'Mover izquierda'
+					]
+				],
+		characterState : 'face-right',
+		posXInCanvas: 100,
+		posYInCanvas: 200,
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.2
+	},
+	{
+		xStart : 132,
+		yStart : 260,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success repeat" mov="repeat-1-2">Repetir acciones 2 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>'
+		],
+		movements : [{
+			x: 8
+		},{
+			y: -8
+		},{
+			x: 8
+		},{
+			y: -8
+		},{
+			x: -8
+		}, {
+			y: -8
+		}],
+		correct: [
+					[
+						'Mover derecha',
+						'Mover arriba',
+						'Mover derecha',
+						'Mover arriba',
+						'Mover izquierda',
+						'Mover arriba'
+					]
+				],
+		characterState : 'face-right',
+		posXInCanvas: 100,
+		posYInCanvas: 200,
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.2
+	},
+	{
+		xStart : 132,
+		yStart : 260,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success repeat" mov="repeat-1-2">Repetir acciones 2 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>'
+		],
+		movements : [{
+			x: 8
+		},{
+			y: -8
+		},{
+			x: 8
+		},{
+			y: -8
+		}],
+		correct: [['Mover derecha', 'Mover arriba', 'Mover derecha', 'Mover arriba']],
+		characterState : 'face-right',
+		posXInCanvas: 100,
+		posYInCanvas: 200,
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.2
+	},
+	{
+		xStart : 132,
+		yStart : 260,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success repeat" mov="repeat-1-2">Repetir acciones 2 veces</div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>'
+		],
+		movements : [{
+			x: 8
+		},{
+			x: 8
+		}],
+		correct: [['Mover derecha', 'Mover derecha' ]],
+		characterState : 'face-right',
+		posXInCanvas: 100,
+		posYInCanvas: 200,
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.2
+	},
+	{
+		xStart : 132,
+		yStart : 260,
+		options:[
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>'
 		],
 		movements : [{
 			y: -8
@@ -78,49 +278,49 @@ var stages = [
 		},{
 			y: -8
 		}],
-		correct: ['Mover arriba 8 pasos', 'Mover derecha 8 pasos', 'Mover arriba 8 pasos' ],
+		correct: [['Mover arriba', 'Mover derecha', 'Mover arriba' ]],
 		characterState : 'face-up',
 		posXInCanvas: 100,
 		posYInCanvas: 200,
 		stepInCanvasX : 8.2,
-		stepInCanvasY : 8.1
+		stepInCanvasY : 8.2
 	},
 	{
 		xStart : 35,
 		yStart : 60,
 		options:[
-			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>'
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>'
 		],
 		movements : [{
 			y: 8
 		},{
 			x: 8
 		}],
-		correct: ['Mover abajo 8 pasos', 'Mover derecha 8 pasos' ],
+		correct: [['Mover abajo', 'Mover derecha' ]],
 		characterState : 'face-right',
 		posXInCanvas: 0,
 		posYInCanvas: 0,
-		stepInCanvasX : 7.1,
-		stepInCanvasY : 8.1
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.0
 	},
 	{
 		xStart : 35,
 		yStart : 60,
 		options:[
-			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba 8 pasos</div>',
-			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo 8 pasos</div>'
+			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>'
 		],
 		movements : [{
-			y: 8
-		},{
 			x: 8
+		},{
+			y: 8
 		}],
-		correct: ['Mover abajo 8 pasos', 'Mover derecha 8 pasos' ],
+		correct: [['Mover derecha', 'Mover abajo' ]],
 		characterState : 'face-right',
 		posXInCanvas: 0,
 		posYInCanvas: 0,
@@ -132,16 +332,18 @@ var stages = [
 var images = [],
 	canvas = document.getElementById('design-canvas'),
 	context = canvas.getContext('2d'),
-	fps = 30,
 	//id = context.createImageData(1, 1),
 	//d = id.data,
+	greenColor = ['#99D8A2', '#4DD65F', '#11d628'],
+	redColor = ['#DB7B7B', '#D12E2E', '#CE0000'],
 	stage = 0,
+	points = [],
 	characterState = stages[stage].characterState,
 	jsonCharacterState = character.animations[characterState],
 	totalResources = 3,
 	spriteSize = 64,
 	numResourcesLoaded = 0,
-	ticksPerFrame = 2,
+	ticksPerFrame = 1,
 	tickCount = 0,
 	posInSpriteSheet = 0,
 	posXInCanvas = stages[stage].posXInCanvas,
@@ -169,10 +371,26 @@ $('#droppable-element').droppable({
 	drop: function(event, ui){
 		if (!$(ui.draggable).hasClass('no-draggable')){
 			$(ui.draggable).appendTo('#droppable-element').removeAttr('style').addClass('no-draggable');
-			$('#droppable-element').sortable();
+			if($(ui.draggable).hasClass('repeat')){
+				$(ui.draggable).addClass('repeatable bg-success-2');
+				$(ui.draggable).append('<div class="space">&nbsp;</div>');
+				$(ui.draggable).droppable({
+					greedy: true,
+					accept: '.draggable-element',
+					activeClass: 'ui-state-highlight-level2',
+					drop: function(event, ui){
+						if (!$(ui.draggable).hasClass('no-draggable')){
+							$(this).find('.space').remove();
+							$(ui.draggable).appendTo(this).removeAttr('style').addClass('no-draggable inside-loop');
+						}
+					}
+				});
+			}
 		}
 	}
 });
+
+
 
 function drawOptionsAndMakeDraggable(){
 	for(var pos=0; pos < stages[stage].options.length; pos++){
@@ -195,6 +413,7 @@ function revertToStart(){
 	drawCharacterInStartingPosition();
 	drawOptionsAndMakeDraggable();
 }
+
 $(document).ready(function(){
 	var $canvasElement = $('#design-canvas');
 	$canvasElement.width($canvasElement.parent().width());
@@ -208,12 +427,24 @@ function clearCanvas(){
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+function drawPoints(){
+	for(var p=0; p<points.length; p++){
+		context.beginPath();
+		context.fillStyle = "#DDFF00";
+		context.strokeStyle = "#DDFF00";
+		context.arc(points[p].x, points[p].y, 4, 0, 2 * Math.PI);
+		context.fill();
+		context.closePath();
+	}
+}
+
 function drawStage(stage){
 	context.beginPath();
 	var pathX = stage.xStart;
 	var pathY = stage.yStart;
-	context.lineWidth = 5;
+	context.lineWidth = 4;
 	context.strokeStyle = "#DDFF00";
+	points.push({x:pathX, y:pathY});
 	context.moveTo(pathX, pathY);
 	for(var pos = 0; pos < stage.movements.length; pos++){
 		if(stage.movements[pos].hasOwnProperty("x")){
@@ -222,9 +453,12 @@ function drawStage(stage){
 			pathY = pathY + (stepInCanvasY * ( stage.movements[pos].y));
 		}
 		context.lineTo(pathX, pathY);
+		points.push({x:pathX, y:pathY});
 	}
 	context.stroke();
+	points.push({x:pathX, y:pathY});
 	context.closePath();
+	drawPoints();
 }
 
 function drawImage(im){
@@ -394,7 +628,7 @@ function redraw() {
 			if(stepsMoved > stepsToWalk * 4){		// 4 thicks = one step
 				if(pos === movements.length){		// all movements finished
 					clearInterval(interval);
-					if(allRight && movements.length == stages[stage].correct.length){
+					if(allRight && movements.length == stages[stage].correct[0].length){
 						$("#dialog-success").dialog("open");
 					}else{
 						tickCount = 0;
@@ -429,8 +663,12 @@ function redraw() {
 }
 
 function isTheRightStep(){
-	if (movements[pos].html() === stages[stage].correct[pos]){
+	if (movements[pos].html().indexOf(stages[stage].correct[0][pos]) != -1){
 		return true;
+	}else if (stages[stage].correct[1] != undefined){
+		if (movements[pos].html().indexOf(stages[stage].correct[1][pos]) != -1){
+			return true;
+		}
 	}
 	return false;
 }
@@ -448,9 +686,25 @@ function setCharacterDirection(){
 			characterState = 'walk-down';
 		}
 		if(isTheRightStep()){
-			markStep('#7BDB89');		// mark green, all good
+			if($(movements[pos]).attr('colorPos') != undefined){
+				let actualColorPos = parseInt($(movements[pos]).attr('colorPos'));
+				markStep(greenColor[actualColorPos]);
+				actualColorPos++;
+				$(movements[pos]).attr('colorPos', actualColorPos);
+			}else{
+				markStep(greenColor[0]);		// mark green, all good
+				$(movements[pos]).attr('colorPos', 1)
+			}
 		}else{
-			markStep('#DB7B7B');		// mark red, bad step
+			if($(movements[pos]).attr('colorPos') != undefined){
+				let actualColorPos = parseInt($(movements[pos]).attr('colorPos'));
+				markStep(redColor[actualColorPos]);
+				actualColorPos++;
+				$(movements[pos]).attr('colorPos', actualColorPos);
+			}else{
+				markStep(redColor[0]);		// mark green, all good
+				$(movements[pos]).attr('colorPos', 1)
+			}
 			allRight = false;
 		}
 	}else{
@@ -460,6 +714,7 @@ function setCharacterDirection(){
 	pos++;
 }
 
+
 function markStep(color){
 	$(movements[pos]).animate({
 		'background-color': color
@@ -467,9 +722,10 @@ function markStep(color){
 }
 
 function resetVariables(){
+	points = [];
 	characterState = stages[stage].characterState;
 	jsonCharacterState = character.animations[characterState];
-	ticksPerFrame = 2;
+	ticksPerFrame = 1;
 	tickCount = 0;
 	posInSpriteSheet = 0;
 	posXInCanvas = stages[stage].posXInCanvas;
@@ -510,8 +766,20 @@ $('#try').on('click', function(event) {
 	movements = [];
 	$('#droppable-element').children('.draggable-element') .each(function(index, el) {
 		//movements.push($(el).attr('mov'));
-		movements.push($(el));
+		if($(el).hasClass('repeat')){
+			for(var i=0; i<=1; i++){		// solo aceptamos loop de 2 por ahora
+				$(el).children('.draggable-element').each(function(index, el) {
+					movements.push($(el));
+				});
+			}
+		}else{
+			movements.push($(el));
+		}
 	});
 	setCharacterDirection();
 	interval = setInterval(redraw, 1000 / fps);
+});
+
+$('#reset').on('click', function(event) {
+	revertToStart();
 });

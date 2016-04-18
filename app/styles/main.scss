@@ -4,8 +4,17 @@ $icon-font-path: '../fonts/';
 body{
   font-family: "Georgia";
 }
-.ui-state-highlight{
-  //background-color: #efefef;
+
+.ui-state-highlight-level2{
+  background-color: #FFD48A !important;
+}
+
+.inside-loop{
+  margin: 2px 2px 2px 20px !important;
+}
+
+.bg-success-2{
+  background-color: #BDEDA8 !important;
 }
 
 .draggable-element{
@@ -33,7 +42,7 @@ body{
 }
 
 #droppable-element{
-  height: 400px;
+  height: 500px;
 }
 
 /* jquery-ui no close button */
