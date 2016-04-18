@@ -1,4 +1,5 @@
 'use strict';
+/*jshint -W083 */
 
 // sprite size: 64x64
 // maybe i should take every thick as a step
@@ -628,7 +629,7 @@ function redraw() {
 			if(stepsMoved > stepsToWalk * 4){		// 4 thicks = one step
 				if(pos === movements.length){		// all movements finished
 					clearInterval(interval);
-					if(allRight && movements.length == stages[stage].correct[0].length){
+					if(allRight && movements.length === stages[stage].correct[0].length){
 						$("#dialog-success").dialog("open");
 					}else{
 						tickCount = 0;
@@ -768,8 +769,8 @@ $('#try').on('click', function(event) {
 		//movements.push($(el).attr('mov'));
 		if($(el).hasClass('repeat')){
 			for(var i=0; i<=1; i++){		// solo aceptamos loop de 2 por ahora
-				$(el).children('.draggable-element').each(function(index, el) {
-					movements.push($(el));
+				$(el).children('.draggable-element').each(function(index2, el2) {
+					movements.push($(el2));
 				});
 			}
 		}else{
@@ -780,6 +781,6 @@ $('#try').on('click', function(event) {
 	interval = setInterval(redraw, 1000 / fps);
 });
 
-$('#reset').on('click', function(event) {
+$('#reset').on('click', function() {
 	revertToStart();
 });
