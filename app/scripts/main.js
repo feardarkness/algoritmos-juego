@@ -309,7 +309,7 @@ var stages = [
 		posXInCanvas: 0,
 		posYInCanvas: 0,
 		stepInCanvasX : 8.2,
-		stepInCanvasY : 8.0
+		stepInCanvasY : 8.2
 	},
 	{
 		xStart : 35,
@@ -325,8 +325,8 @@ var stages = [
 		characterState : 'face-right',
 		posXInCanvas: 0,
 		posYInCanvas: 0,
-		stepInCanvasX : 7.1,
-		stepInCanvasY : 8.1
+		stepInCanvasX : 8.2,
+		stepInCanvasY : 8.2
 	}
 ];
 
@@ -433,8 +433,8 @@ function clearCanvas(){
 function drawPoints(){
 	for(var p=0; p<points.length; p++){
 		context.beginPath();
-		context.fillStyle = "#DDFF00";
-		context.strokeStyle = "#DDFF00";
+		context.fillStyle = '#DDFF00';
+		context.strokeStyle = '#DDFF00';
 		context.arc(points[p].x, points[p].y, 4, 0, 2 * Math.PI);
 		context.fill();
 		context.closePath();
@@ -446,7 +446,7 @@ function drawStage(stage){
 	var pathX = stage.xStart;
 	var pathY = stage.yStart;
 	context.lineWidth = 4;
-	context.strokeStyle = "#DDFF00";
+	context.strokeStyle = '#DDFF00';
 	points.push({x:pathX, y:pathY});
 	context.moveTo(pathX, pathY);
 	for(var pos = 0; pos < stage.movements.length; pos++){
