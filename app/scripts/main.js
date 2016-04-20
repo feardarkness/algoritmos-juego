@@ -1,5 +1,4 @@
 'use strict';
-/*jshint -W083 */
 
 // sprite size: 64x64
 // maybe i should take every thick as a step
@@ -59,6 +58,8 @@ var character = {
 		}
 	}
 };
+
+
 
 var stages = [
 	{
@@ -290,6 +291,7 @@ var stages = [
 		xStart : 35,
 		yStart : 60,
 		options:[
+			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
 			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
 			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
 			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
@@ -299,8 +301,10 @@ var stages = [
 			y: 8
 		},{
 			x: 8
+		},{
+			y: 8
 		}],
-		correct: [['Mover abajo', 'Mover derecha' ]],
+		correct: [['Mover abajo', 'Mover derecha', 'Mover abajo']],
 		characterState : 'face-right',
 		posXInCanvas: 0,
 		posYInCanvas: 0,
@@ -312,16 +316,12 @@ var stages = [
 		yStart : 60,
 		options:[
 			'<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
-			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
-			'<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
-			'<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>'
+			'<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>'
 		],
 		movements : [{
 			x: 8
-		},{
-			y: 8
 		}],
-		correct: [['Mover derecha', 'Mover abajo' ]],
+		correct: [['Mover derecha']],
 		characterState : 'face-right',
 		posXInCanvas: 0,
 		posYInCanvas: 0,
@@ -329,6 +329,8 @@ var stages = [
 		stepInCanvasY : 8.1
 	}
 ];
+
+stages = stages.reverse();
 
 var images = [],
 	canvas = document.getElementById('design-canvas'),
@@ -362,8 +364,8 @@ var images = [],
 
 $(window).resize(function(){
 	var $canvasElement = $('#design-canvas');
-	$canvasElement.width($canvasElement.parent().width());
-	$canvasElement.height($canvasElement.parent().width());
+	$canvasElement.width($canvasElement.parent().width() - 50);
+	$canvasElement.height($canvasElement.parent().width() - 50);
 });
 
 $('#droppable-element').droppable({
@@ -417,8 +419,8 @@ function revertToStart(){
 
 $(document).ready(function(){
 	var $canvasElement = $('#design-canvas');
-	$canvasElement.width($canvasElement.parent().width());
-	$canvasElement.height($canvasElement.parent().width());
+	$canvasElement.width($canvasElement.parent().width() - 50);
+	$canvasElement.height($canvasElement.parent().width() - 50);
 	drawOptionsAndMakeDraggable();
 });
 
@@ -485,10 +487,25 @@ function drawCharacterInStartingPosition(){
 	drawImage(0);
 }
 
+$("#howto").on('click', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	$('#dialog-howto').dialog('open');
+});
+
+$("#about").on('click', function(event) {
+	event.preventDefault();
+	/* Act on the event */
+	$('#dialog-about').dialog('open');
+});
+
 $('#dialog-message').dialog({
 	modal: true,
 	autoOpen: false,
 	dialogClass: 'no-close',
+	closeOnEscape: false,
+	resizable:false,
+	draggable: false,
 	buttons: [{
 		text: "Dejame intentar de nuevo",
 		click: function(){
@@ -502,11 +519,49 @@ $('#dialog-success').dialog({
 	modal: true,
 	autoOpen: false,
 	dialogClass: 'no-close',
+	closeOnEscape: false,
+	resizable:false,
+	draggable: false,
 	buttons: [{
 		text: "Siguiente reto",
 		click: function(){
 			$(this).dialog('close');
 			stage++;
+			revertToStart();
+		}
+	}]
+});
+
+$('#dialog-howto').dialog({
+	modal: true,
+	autoOpen: false,
+	dialogClass: 'no-close',
+	closeOnEscape: false,
+	resizable:false,
+	draggable: false,
+	height: 520,
+	width: 560,
+	buttons: [{
+		text: "OK",
+		click: function(){
+			$(this).dialog('close');
+			revertToStart();
+		}
+	}]
+});
+
+$('#dialog-about').dialog({
+	modal: true,
+	autoOpen: false,
+	dialogClass: 'no-close',
+	closeOnEscape: false,
+	resizable:false,
+	draggable: false,
+	width: 350,
+	buttons: [{
+		text: "Entendido",
+		click: function(){
+			$(this).dialog('close');
 			revertToStart();
 		}
 	}]

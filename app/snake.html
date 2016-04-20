@@ -15,8 +15,8 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <!-- build:css styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
+    <!-- build:css styles/main2.css -->
+    <link rel="stylesheet" href="styles/main2.css">
     <!-- endbuild -->
 
     <!-- build:js scripts/vendor/modernizr.js -->
@@ -29,58 +29,22 @@
     <![endif]-->
     <div class="container-fluid">
       <div class="header">
-        <img src="/images/logo-agetic.png">
-        <span class="lead">Lógica</span>
-        <ul class="nav nav-pills pull-right">
-          <li><a id="howto" href="#">Como jugar</a></li>
-          <li><a id="about" href="#">About</a></li>
-        </ul>
-        <!--h2 class="pull-right">Aprendiendo a Programar</h2-->
+        <h3 class="text-muted">Snake game</h3>
       </div>
-      <div class="row no-pad">
-        <div class="col-lg-1  col-md-0 hidden-sm hidden-xs"></div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
-          <canvas class="pull-right" id="design-canvas" width="400" height="400">
-          </canvas>
-        </div>
-        <div id="elements-holder" class="col-lg-3  col-md-4  col-sm-4 col-xs-4">
-          <h4>Posicionar items</h4>
-          <button id="try" class="btn btn-primary"><h4>Probar</h4></button>
-          <div id="droppable-element">
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div>
+            <canvas id="canvas" width="450" height="450">
+            </canvas>
           </div>
         </div>
-        <div id="elements-container" class="col-lg-3  col-md-4 col-sm-4 col-xs-4">
-          <h4>Items que se pueden utilizar</h4>
-          <button id="reset" class="btn btn-danger"><h4>Limpiar</h4></button>
-        </div>
-        <div class="col-lg-1 col-md-0 hidden-sm hidden-xs"></div>
+        <!-- Lets make a simple snake game -->
       </div>
 
-    </div>
-    <footer class="footer">
-      <h5 class="text-center">&copy; 2016, AGETIC</h5>
-    </footer>
-
-    <div id="dialog-message" title=":(">
-      <p>
-        El profesor no ha logrado completar el camino...
-      </p>
-    </div>
-
-    <div id="dialog-success" title=":)">
-      <p>
-        Bien hecho!!! Intenta con el siguiente reto...
-      </p>
-    </div>
-
-    <div id="dialog-howto" title="Como jugar">
-      <img src="/images/prueba.png">
-    </div>
-
-    <div id="dialog-about" title="About">
-      <p>Creado en la Agencia de Tecnologías de la Información y Comunicación</p>
-      <p>Quieres más niveles, sugerencias o algún comentario, escribe a <strong>aalvarado@agetic.gob.bo</strong></p>
-      <p><em>Ten un buen día</em> >_<</p>
+      <div class="footer">
+        <p>AGETIC</p>
+      </div>
     </div>
 
     <!-- build:js scripts/vendor.js -->
@@ -105,8 +69,8 @@
     <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
     <!-- endbuild -->
 
-    <!-- build:js scripts/main.js -->
-    <script src="scripts/main.js"></script>
+    <!-- build:js scripts/main2.js -->
+    <script src="scripts/main2.js"></script>
     <!-- endbuild -->
   </body>
 </html>
