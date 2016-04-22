@@ -6,30 +6,39 @@
 // para ajustar a velocidad cambiar la variable fps
 var fps = 30;
 
+var animation = {
+	'moleup': [
+		{
+			from: 0,
+			to: 0,
+			repeat: 4
+		}
+	]
+};
+
 var images = [],
 	canvas = document.getElementById('canvas'),
 	context = canvas.getContext('2d'),
 	//id = context.createImageData(1, 1),
 	//d = id.data,
-	greenColor = ['#99D8A2', '#4DD65F', '#11d628'],
-	redColor = ['#DB7B7B', '#D12E2E', '#CE0000'],
-	imagePos = 0,
-	stage = 0,
-	points = [],
-	totalResources = 8,
-	spriteSize = 64,
+	posX = 170,
+	posY = 270,
+	startY = 270,
 	numResourcesLoaded = 0,
-	ticksPerFrame = 10,
+	totalResources = 9,
 	tickCount = 0,
-	posInSpriteSheet = 0,
-	movementRate = 2,
-	stepsMoved = 0,
-	movements = [],
-	pos = 0,
-	stepsToWalk = 8,
-	interval = null,
-	deadInterval = null,
-	allRight = true;
+	ticksPerFrame = 3,
+	tickCountGrass = 0,
+	ticksPerFrameGrass = 5,
+	imagePos = 0,
+	xMovement = 50,
+	currentAnimation = 'moleUp',
+	k = -1,
+	laughTimes = 1,
+	totalLaughTimes = 12,
+	switchGrass = 1,
+	grassPos = 0;
+
 
 $('#droppable-element').droppable({
 	accept: '.draggable-element',
@@ -57,13 +66,6 @@ $('#droppable-element').droppable({
 });
 
 
-function revertToStart(){
-	clearOptionsInScreen();
-	resetVariables();
-	drawCharacterInStartingPosition();
-	drawOptionsAndMakeDraggable();
-}
-
 function clearCanvas(){
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -79,35 +81,6 @@ function drawPoints(){
 	}
 }
 
-function drawStage(stage){
-	context.beginPath();
-	var pathX = stage.xStart;
-	var pathY = stage.yStart;
-	context.lineWidth = 4;
-	context.strokeStyle = '#DDFF00';
-	points.push({x:pathX, y:pathY});
-	context.moveTo(pathX, pathY);
-	for(var pos = 0; pos < stage.movements.length; pos++){
-		if(stage.movements[pos].hasOwnProperty("x")){
-			pathX = pathX + (stepInCanvasX * ( stage.movements[pos].x));
-		}else{
-			pathY = pathY + (stepInCanvasY * ( stage.movements[pos].y));
-		}
-		context.lineTo(pathX, pathY);
-		points.push({x:pathX, y:pathY});
-	}
-	context.stroke();
-	points.push({x:pathX, y:pathY});
-	context.closePath();
-	drawPoints();
-}
-
-function drawImage(im){
-	context.drawImage(images[im], 0, 0, 200, 200, 50, 50, 100, 100);
-}
-
-function drawCharacterInStartingPosition(){
-}
 
 function drawEllipse(centerX, centerY, width, height) {
 	context.beginPath();
@@ -133,6 +106,7 @@ function fillBackground(color){
 	context.rect(0, 0, 400, 400);
 	context.fillStyle = color;
 	context.fill();
+	context.closePath();
 }
 
 
@@ -141,13 +115,87 @@ function drawShadow(){
 	drawEllipse(posXInCanvas + 32, posYInCanvas + 60, 30, 4);
 }
 
+function drawImage(im){
+	context.drawImage(images[im], 0, 0, 178, xMovement, posX, posY, 178, xMovement);
+}
+
+function calculatePositionAndChangeImage(){
+	if(currentAnimation === 'moleUp'){
+		laughTimes = 0;
+		imagePos = 0;
+		if(xMovement < 200){
+			xMovement += 10
+		}
+		if(startY - posY <= 140){
+			posY -= 10;
+		}else{
+			currentAnimation = 'smile';
+		}
+	}
+	if(currentAnimation === 'moleDown'){
+		laughTimes = 0;
+		imagePos = 0;
+		if(xMovement >= 10){
+			xMovement -= 10
+		}
+		if(xMovement == 0){
+			xMovement = 1;
+		}
+		if(startY - posY >= -20){
+			posY += 10;
+		}
+	}
+	if(currentAnimation === 'smile'){
+		laughTimes++;
+		if(imagePos === 0 || imagePos === 3){
+			k = k * -1;
+		}
+		posY = posY - (5*k);
+		imagePos += k;
+		if(laughTimes === totalLaughTimes){
+			currentAnimation = 'moleDown';
+		}
+	}
+}
+
+function drawGrass(){
+	context.beginPath();
+	context.rect(0, 315, 500, 500);
+	context.fillStyle = '#3AAA35';
+	context.fill();
+	context.closePath();
+	/*
+	context.drawImage(images[8], 0, 0, 128, 128, 0, 190, 128, 128);
+	context.drawImage(images[8], 0, 0, 128, 128, 128, 190, 128, 128);
+	context.drawImage(images[8], 0, 0, 128, 128, 256, 190, 128, 128);
+	context.drawImage(images[8], 0, 0, 128, 128, 384, 190, 128, 128);
+	*/
+	context.drawImage(images[8], grassPos*128, 0, 128, 128, 0, 190, 128, 128);
+	context.drawImage(images[8], grassPos*128, 0, 128, 128, 128, 190, 128, 128);
+	context.drawImage(images[8], grassPos*128, 0, 128, 128, 256, 190, 128, 128);
+	context.drawImage(images[8], grassPos*128, 0, 128, 128, 384, 190, 128, 128);
+	tickCountGrass++;
+	if(tickCountGrass > ticksPerFrameGrass){
+		tickCountGrass = 0;
+		grassPos++;
+		if(grassPos > 3){
+			grassPos = 0;
+		}
+	}
+	/*
+	switchGrass *= -1;
+	if(switchGrass === 1){
+	}else{
+		context.drawImage(images[8], 0, 128, 512, 256, 0, 252, 512, 128);
+	}*/
+}
 
 function redraw() {
-	console.log("asduisabduasdsa");
 	if (tickCount > ticksPerFrame){
-		imagePos++;
+		calculatePositionAndChangeImage();
 		clearCanvas();						// clear earlier step
 		drawImage(imagePos);						// draw character
+		drawGrass();
 		tickCount = 0;
 	}else {
 		tickCount++;
@@ -163,47 +211,6 @@ function isTheRightStep(){
 		}
 	}
 	return false;
-}
-
-
-function setCharacterDirection(){
-	if (pos < movements.length){
-		if (movements[pos].attr('mov') === 'right-movement'){
-			characterState = 'walk-right';
-		}else if (movements[pos].attr('mov') === 'left-movement'){
-			characterState = 'walk-left';
-		}else if (movements[pos].attr('mov') === 'up-movement'){
-			characterState = 'walk-up';
-		}else if (movements[pos].attr('mov') === 'down-movement'){
-			characterState = 'walk-down';
-		}
-		if(isTheRightStep()){
-			if($(movements[pos]).attr('colorPos') != undefined){
-				let actualColorPos = parseInt($(movements[pos]).attr('colorPos'));
-				markStep(greenColor[actualColorPos]);
-				actualColorPos++;
-				$(movements[pos]).attr('colorPos', actualColorPos);
-			}else{
-				markStep(greenColor[0]);		// mark green, all good
-				$(movements[pos]).attr('colorPos', 1)
-			}
-		}else{
-			if($(movements[pos]).attr('colorPos') != undefined){
-				let actualColorPos = parseInt($(movements[pos]).attr('colorPos'));
-				markStep(redColor[actualColorPos]);
-				actualColorPos++;
-				$(movements[pos]).attr('colorPos', actualColorPos);
-			}else{
-				markStep(redColor[0]);		// mark green, all good
-				$(movements[pos]).attr('colorPos', 1)
-			}
-			allRight = false;
-		}
-	}else{
-		characterState = 'face-right';
-	}
-	jsonCharacterState = character.animations[characterState];
-	pos++;
 }
 
 
@@ -253,3 +260,4 @@ loadImage('images/mole_thump1.png', 4);
 loadImage('images/mole_thump2.png', 5);
 loadImage('images/mole_thump3.png', 6);
 loadImage('images/mole_thump4.png', 7);
+loadImage('images/grass.png', 8);
