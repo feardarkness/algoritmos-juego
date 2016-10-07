@@ -63,6 +63,63 @@ let character = {
 
 let stages = [
   {
+    xStart : 180,
+    yStart : 180,
+    options:[
+      '<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success repeat" mov="repeat-3">Repetir acciones 3 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success" mov="right-movement">Mover derecha <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success" mov="up-movement">Mover arriba <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success repeat" mov="repeat-2">Repetir acciones 2 veces  <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success" mov="down-movement">Mover abajo <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span></div>',
+      '<div class="draggable-element bg-success" mov="left-movement">Mover izquierda <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></div>',
+    ],
+    movements : [{
+      x: -8
+    },{
+      y: 8
+    },{
+      x: 8
+    },{
+      y: -8
+    },{
+      y: -8
+    },{
+      x: -8
+    },{
+      y: 8
+    },{
+      x: -8
+    },{
+      y: -8
+    },{
+      x: 8
+    }],
+    correct: [
+      [
+        'Mover izquierda',
+        'Mover abajo',
+        'Mover abajo',
+        'Mover abajo',
+        'Mover derecha',
+        'Mover abajo',
+        'Mover izquierda',
+        'Mover arriba',
+        'Mover izquierda',
+        'Mover arriba',
+        'Mover izquierda',
+      ]
+    ],
+    characterState : 'face-left',
+    posXInCanvas: 85,
+    posYInCanvas: 55,
+    stepInCanvasX : 8.2,
+    stepInCanvasY : 8.2
+  },
+  {
     xStart : 280,
     yStart : 80,
     options:[
